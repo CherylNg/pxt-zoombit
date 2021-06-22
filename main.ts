@@ -13,6 +13,10 @@ const RIGHT_MOTOR = MotorChannel.M1;
 // Default Maker Line pin.
 const MAKER_LINE_PIN = AnalogPin.P2;
 
+// Default ultrasonic sensor pins.
+const ULTRASONIC_TRIG_PIN = DigitalPin.P1
+const ULTRASONIC_ECHO_PIN = DigitalPin.P9
+
 // Headlight channel.
 enum HeadlightChannel {
     //% block="left"
@@ -45,19 +49,19 @@ enum TurnDirection {
 
 // Maker Line position.
 enum LinePosition {
-    //% block="left 2"
+    //% block="far left"
     Left2 = 0,
 
-    //% block="left 1"
+    //% block="left"
     Left1 = 1,
 
     //% block="center"
     Center = 2,
 
-    //% block="right 1"
+    //% block="right"
     Right1 = 3,
 
-    //% block="right 2"
+    //% block="far right"
     Right2 = 4,
 
     //% block="all"
@@ -256,7 +260,7 @@ namespace zoombit {
     //% blockGap=8
     //% blockId=zoombit_is_line_on_position
     //% block="line is on %position"
-    //% position.fieldEditor="gridpicker" position.fieldOptions.columns=7
+    //% position.fieldEditor="gridpicker" position.fieldOptions.columns=5
     export function isLineOnPosition(position: LinePosition): boolean {
         let analogValue = pins.analogReadPin(MAKER_LINE_PIN);
 
@@ -291,5 +295,57 @@ namespace zoombit {
         }
 
         return false;
+    }
+
+
+
+    /**
+     * Return the line position detected by Maker Line (-100 to 100, Negative = Left, 0 = Center, Positive = Right).
+     */
+    //% group="Maker Line"
+    //% weight=15
+    //% blockGap=8
+    //% blockId=zoombit_read_line_position
+    //% block="line position"
+    export function readLinePosition(): number {
+        let analogValue = pins.analogReadPin(MAKER_LINE_PIN);
+        
+        // Assume line is at center when all or no sensor detects line.
+        if ((analogValue < 81) || (analogValue > 941)) return 512;
+
+        // Scale the sensor value to -100 to 100.
+        let position = (analogValue - 512) / 4;
+        position = rekabit.limit(position, -100, 100);
+
+        return position;
+    }
+
+
+
+    /**
+     * Return distance measured by ultrasonic sensor in centimeters (cm).
+     * Distance = 3cm - 255cm. Return '255' if distance is > 255cm or no echo is detected.
+     */
+    //% group="Ultrasonic"
+    //% weight=14
+    //% blockGap=8
+    //% blockId=zoombit_read_ultrasonic
+    //% block="ultrasonic distance (cm)"
+    export function readUltrasonic(): number {
+        // Transmit a pulse.
+        pins.digitalWritePin(ULTRASONIC_TRIG_PIN, 0);
+        control.waitMicros(2);
+        pins.digitalWritePin(ULTRASONIC_TRIG_PIN, 1);
+        control.waitMicros(10);
+        pins.digitalWritePin(ULTRASONIC_TRIG_PIN, 0);
+
+        // Read the echo.
+        let pulse = pins.pulseIn(ULTRASONIC_ECHO_PIN, PulseValue.High, 255 * 38);
+
+        // No echo detected.
+        if (pulse == 0) return 255;
+
+        // Tuned for microbit to get the right value in cm.
+        return Math.idiv(pulse, 38);
     }
 }
