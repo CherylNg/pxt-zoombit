@@ -258,10 +258,10 @@ namespace zoombit {
     //% group="Maker Line"
     //% weight=16
     //% blockGap=8
-    //% blockId=zoombit_is_line_on_position
-    //% block="line is on %position"
+    //% blockId=zoombit_is_line_detected_on
+    //% block="line detected on %position"
     //% position.fieldEditor="gridpicker" position.fieldOptions.columns=5
-    export function isLineOnPosition(position: LinePosition): boolean {
+    export function isLineDetectedOn(position: LinePosition): boolean {
         let analogValue = pins.analogReadPin(MAKER_LINE_PIN);
 
         switch (position) {
