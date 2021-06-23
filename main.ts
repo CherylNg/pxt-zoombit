@@ -11,11 +11,11 @@ const LEFT_MOTOR = MotorChannel.M1;
 const RIGHT_MOTOR = MotorChannel.M2;
 
 // Default Maker Line pin.
-const MAKER_LINE_PIN = AnalogPin.P2;
+const MAKER_LINE_PIN = AnalogPin.P1;
 
 // Default ultrasonic sensor pins.
-const ULTRASONIC_TRIG_PIN = DigitalPin.P1
-const ULTRASONIC_ECHO_PIN = DigitalPin.P9
+const ULTRASONIC_TRIG_PIN = DigitalPin.P2
+const ULTRASONIC_ECHO_PIN = DigitalPin.P12
 
 // Headlight channel.
 enum HeadlightChannel {
