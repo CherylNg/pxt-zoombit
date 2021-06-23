@@ -8,7 +8,7 @@
 
 // Default motor channel.
 const LEFT_MOTOR = MotorChannel.M1;
-const RIGHT_MOTOR = MotorChannel.M1;
+const RIGHT_MOTOR = MotorChannel.M2;
 
 // Default Maker Line pin.
 const MAKER_LINE_PIN = AnalogPin.P2;
