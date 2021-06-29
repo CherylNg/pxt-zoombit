@@ -76,7 +76,7 @@ enum LinePosition {
 /**
  * Blocks for ZOOM:BIT motors and sensors.
  */
-//% weight=11 color=#ff8000 icon="\uf085" block="ZOOM:BIT"
+//% weight=11 color=#ff8000 icon="\uf1b9" block="ZOOM:BIT"
 //% groups=['Headlights', 'DC Motors', 'Maker Line', 'Ultrasonic']
 namespace zoombit {
 
