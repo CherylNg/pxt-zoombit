@@ -40,7 +40,7 @@ input.onButtonPressed(Button.B, function () {
 })
 ```  
   
-## Make Line Sensor
+## Maker Line Sensor
 
 Show line position on the LED matrix display. Please take note of the position of the micro:bit on ZOOM:BIT robot.
 
@@ -92,7 +92,7 @@ basic.forever(function () {
 })
 ```  
   
-## Ultrasonic
+## Ultrasonic Sensor
 
 Show *Heart* when an object is detected less 15cm away from the ultrasonic sensor, otherwise show *Small Heart*
 
