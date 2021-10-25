@@ -8,7 +8,7 @@
 ## Adding the Extension in MakeCode Editor  
 * open [https://makecode.microbit.org/](https://makecode.microbit.org/)
 * click on **New Project** and give your project a meaningful name
-* click on **Extensions** under the gearwheel menu
+* click on **Extensions** under the gearwheel :gear: menu
 * search for '**zoombit**' or "**https://github.com/cytrontechnologies/pxt-zoombit**" 
 * click on the zoombit card to install the extension
   
@@ -56,11 +56,11 @@ basic.forever(function () {
             `)
     } else if (zoombit.isLineDetectedOn(LinePosition.Left1)) {
         basic.showLeds(`
-            . . . . #
-            . . . . #
-            . . . . #
-            . . . . #
-            . . . . #
+            . . . # .
+            . . . # .
+            . . . # .
+            . . . # .
+            . . . # .
             `)
     } else if (zoombit.isLineDetectedOn(LinePosition.Center)) {
         basic.showLeds(`
@@ -111,8 +111,8 @@ basic.forever(function () {
 * for PXT/microbit  
   
   
-##
+
 > Open this page at [https://cytrontechnologies.github.io/pxt-zoombit/](https://cytrontechnologies.github.io/pxt-zoombit/)  
   
-###### Script for GitHub Pages footer
+  
 <script src="https://makecode.com/gh-pages-embed.js"></script><script>makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.owner_name }}/{{ site.github.repository_name }}");</script>
