@@ -4,6 +4,9 @@
   
 ![ZOOM:BIT](https://raw.githubusercontent.com/CytronTechnologies/pxt-zoombit/master/icon.png)
   
+## Educational Resources
+Visit [ZOOM:BIT Resource Hub](https://sites.google.com/cytron.io/zoombit-resource-hub/) if you need further assistance with ZOOM:BIT Robot Car Kit and its lessons.
+  
   
 ## Adding the Extension in MakeCode Editor  
 * open [https://makecode.microbit.org/](https://makecode.microbit.org/)
