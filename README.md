@@ -1,31 +1,118 @@
-
-> Open this page at [https://cytrontechnologies.github.io/pxt-zoombit/](https://cytrontechnologies.github.io/pxt-zoombit/)
-
-## Use as Extension
-
-This repository can be added as an **extension** in MakeCode.
-
+# Cytron ZOOM:BIT Extension for Microsoft MakeCode  
+  
+[Cytron **ZOOM:BIT** Robot Car Kit for micro:bit](https://www.cytron.io/p-zoombit) comes with a booklet covering 9+1 hands-on building and coding lessons. You will follow the intuitive instructions guide to Build Your Own Robot and explore programming basics in a fun and engaging manner.
+  
+![ZOOM:BIT](https://raw.githubusercontent.com/CytronTechnologies/pxt-zoombit/master/icon.png)
+  
+  
+## Adding the Extension in MakeCode Editor  
 * open [https://makecode.microbit.org/](https://makecode.microbit.org/)
-* click on **New Project**
+* click on **New Project** and give your project a meaningful name
 * click on **Extensions** under the gearwheel menu
-* search for **https://github.com/cytrontechnologies/pxt-zoombit** and import
+* search for '**zoombit**' or "**https://github.com/cytrontechnologies/pxt-zoombit**" 
+* click on the zoombit card to install the extension
+  
+  
+# Examples  
+## Headlights  
 
-## Edit this project ![Build status badge](https://github.com/cytrontechnologies/pxt-zoombit/workflows/MakeCode/badge.svg)
+Turn on headlights when button A is pressed, turn off when button B is pressed.
 
-To edit this repository in MakeCode.
+```blocks
+input.onButtonPressed(Button.A, function () {
+    zoombit.setHeadlight(HeadlightChannel.All, zoombit.digitalStatePicker(DigitalIoState.On))
+})
+input.onButtonPressed(Button.B, function () {
+    zoombit.setHeadlight(HeadlightChannel.All, zoombit.digitalStatePicker(DigitalIoState.Off))
+})
+```  
+  
+## DC Motors
 
-* open [https://makecode.microbit.org/](https://makecode.microbit.org/)
-* click on **Import** then click on **Import URL**
-* paste **https://github.com/cytrontechnologies/pxt-zoombit** and click import
+Move robot forward at speed 128 when button A is pressed, brake/stop the robot when button B is pressed.
 
-## Blocks preview
+```blocks
+input.onButtonPressed(Button.A, function () {
+    zoombit.move(MotorDirection.Forward, 128)
+})
+input.onButtonPressed(Button.B, function () {
+    zoombit.brake()
+})
+```  
+  
+## Make Line Sensor
 
-This image shows the blocks code from the last commit in master.
-This image may take a few minutes to refresh.
+Show line position on the LED matrix display. Please take note of the position of the micro:bit on ZOOM:BIT robot.
 
-![A rendered view of the blocks](https://github.com/cytrontechnologies/pxt-zoombit/raw/master/.github/makecode/blocks.png)
+```blocks
+basic.forever(function () {
+    if (zoombit.isLineDetectedOn(LinePosition.Left2)) {
+        basic.showLeds(`
+            . . . . #
+            . . . . #
+            . . . . #
+            . . . . #
+            . . . . #
+            `)
+    } else if (zoombit.isLineDetectedOn(LinePosition.Left1)) {
+        basic.showLeds(`
+            . . . . #
+            . . . . #
+            . . . . #
+            . . . . #
+            . . . . #
+            `)
+    } else if (zoombit.isLineDetectedOn(LinePosition.Center)) {
+        basic.showLeds(`
+            . . # . .
+            . . # . .
+            . . # . .
+            . . # . .
+            . . # . .
+            `)
+    } else if (zoombit.isLineDetectedOn(LinePosition.Right1)) {
+        basic.showLeds(`
+            . # . . .
+            . # . . .
+            . # . . .
+            . # . . .
+            . # . . .
+            `)
+    } else if (zoombit.isLineDetectedOn(LinePosition.Right2)) {
+        basic.showLeds(`
+            # . . . .
+            # . . . .
+            # . . . .
+            # . . . .
+            # . . . .
+            `)
+    } else {
+        basic.clearScreen()
+    }
+})
+```  
+  
+## Ultrasonic
 
+Show *Heart* when an object is detected less 15cm away from the ultrasonic sensor, otherwise show *Small Heart*
+
+```blocks
+basic.forever(function () {
+    if (zoombit.readUltrasonic() < 15) {
+        basic.showIcon(IconNames.Heart)
+    } else {
+        basic.showIcon(IconNames.SmallHeart)
+    }
+})
+```  
+  
+  
 #### Metadata (used for search, rendering)
-
-* for PXT/microbit
+* for PXT/microbit  
+  
+  
+##
+> Open this page at [https://cytrontechnologies.github.io/pxt-zoombit/](https://cytrontechnologies.github.io/pxt-zoombit/)  
+  
+###### Script for GitHub Pages footer
 <script src="https://makecode.com/gh-pages-embed.js"></script><script>makeCodeRender("{{ site.makecode.home_url }}", "{{ site.github.owner_name }}/{{ site.github.repository_name }}");</script>
