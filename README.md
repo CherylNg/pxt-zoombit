@@ -110,7 +110,7 @@ basic.forever(function () {
 ```  
   
   
-#### Metadata (used for search, rendering)
+#### Supported targets
 * for PXT/microbit  
   
   
