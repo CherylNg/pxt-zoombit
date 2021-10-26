@@ -110,9 +110,8 @@ basic.forever(function () {
 ```  
   
   
-#### Supported targets
+## Supported targets
 * for PXT/microbit  
-  
   
 
 > Open this page at [https://cytrontechnologies.github.io/pxt-zoombit/](https://cytrontechnologies.github.io/pxt-zoombit/)  
