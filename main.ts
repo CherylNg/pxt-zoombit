@@ -340,12 +340,12 @@ namespace zoombit {
         pins.digitalWritePin(ULTRASONIC_TRIG_PIN, 0);
 
         // Read the echo.
-        let pulse = pins.pulseIn(ULTRASONIC_ECHO_PIN, PulseValue.High, 255 * 38);
+        let pulse = pins.pulseIn(ULTRASONIC_ECHO_PIN, PulseValue.High, 255 * 58);
 
         // No echo detected.
         if (pulse == 0) return 255;
 
-        // Tuned for microbit to get the right value in cm.
-        return Math.idiv(pulse, 38);
+        // Get the value in cm.
+        return Math.idiv(pulse, 58);
     }
 }
