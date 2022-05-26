@@ -80,6 +80,7 @@ enum LinePosition {
 //% groups=['Headlights', 'DC Motors', 'Maker Line', 'Ultrasonic']
 namespace zoombit {
 
+
     // State for headlights.
     let headlightsState = {
         left: 0,
@@ -322,6 +323,21 @@ namespace zoombit {
 
 
 
+    //  Obtain micro:bit board version 
+    //  Ref: https://support.microbit.org/support/solutions/articles/19000130254-identify-the-version-number-of-the-micro-bit-in-your-program
+    let board_ver = control.hardwareVersion()
+
+
+
+    // Special tuning for microbit v1 to get a more accurate value in cm
+    let const_2divspeed = 58
+    
+    if (board_ver == "1") {
+        const_2divspeed = 40
+    }
+
+
+
     /**
      * Return distance measured by ultrasonic sensor in centimeters (cm).
      * Distance = 3cm - 255cm. Return '255' if distance is > 255cm or no echo is detected.
@@ -340,12 +356,12 @@ namespace zoombit {
         pins.digitalWritePin(ULTRASONIC_TRIG_PIN, 0);
 
         // Read the echo.
-        let pulse = pins.pulseIn(ULTRASONIC_ECHO_PIN, PulseValue.High, 255 * 58);
+        let pulse = pins.pulseIn(ULTRASONIC_ECHO_PIN, PulseValue.High, 255 * const_2divspeed);
 
         // No echo detected.
         if (pulse == 0) return 255;
 
         // Get the value in cm.
-        return Math.idiv(pulse, 58);
+        return Math.idiv(pulse, const_2divspeed);
     }
 }
