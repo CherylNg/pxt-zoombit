@@ -14,8 +14,8 @@ const RIGHT_MOTOR = MotorChannel.M2;
 const MAKER_LINE_PIN = AnalogPin.P1;
 
 // Default ultrasonic sensor pins.
-const ULTRASONIC_TRIG_PIN = DigitalPin.P2
-const ULTRASONIC_ECHO_PIN = DigitalPin.P12
+const US_TRIG_PIN = DigitalPin.P2
+const US_ECHO_PIN = DigitalPin.P12
 
 
 // Obtain micro:bit board version 
