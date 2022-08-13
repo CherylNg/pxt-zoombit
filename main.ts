@@ -17,6 +17,21 @@ const MAKER_LINE_PIN = AnalogPin.P1;
 const ULTRASONIC_TRIG_PIN = DigitalPin.P2
 const ULTRASONIC_ECHO_PIN = DigitalPin.P12
 
+
+// Obtain micro:bit board version 
+// Ref: https://support.microbit.org/support/solutions/articles/19000130254-identify-the-version-number-of-the-micro-bit-in-your-program
+const board_ver = control.hardwareVersion()
+
+// Tuning for different microbit versions to get a more accurate value in cm
+let const_2divspeed = 58
+if (board_ver == "1") {
+    const_2divspeed = 39
+}
+
+let elapsed_time = 0
+let prev_time = 0
+
+    
 // Headlight channel.
 enum HeadlightChannel {
     //% block="left"
@@ -323,24 +338,9 @@ namespace zoombit {
 
 
 
-    //  Obtain micro:bit board version 
-    //  Ref: https://support.microbit.org/support/solutions/articles/19000130254-identify-the-version-number-of-the-micro-bit-in-your-program
-    let board_ver = control.hardwareVersion()
-
-
-
-    // Special tuning for microbit v1 to get a more accurate value in cm
-    let const_2divspeed = 58
-    
-    if (board_ver == "1") {
-        const_2divspeed = 40
-    }
-
-
-
     /**
      * Return distance measured by ultrasonic sensor in centimeters (cm).
-     * Distance = 3cm - 255cm. Return '255' if distance is > 255cm or no echo is detected.
+     * Distance = 1cm - 255cm. Return '255' if distance is > 255cm or no echo is detected.
      */
     //% group="Ultrasonic"
     //% weight=14
@@ -348,20 +348,41 @@ namespace zoombit {
     //% blockId=zoombit_read_ultrasonic
     //% block="ultrasonic distance (cm)"
     export function readUltrasonic(): number {
-        // Transmit a pulse.
-        pins.digitalWritePin(ULTRASONIC_TRIG_PIN, 0);
-        control.waitMicros(2);
-        pins.digitalWritePin(ULTRASONIC_TRIG_PIN, 1);
-        control.waitMicros(10);
-        pins.digitalWritePin(ULTRASONIC_TRIG_PIN, 0);
+        
+        do {
+            elapsed_time = control.millis() - prev_time
+            if (elapsed_time < 0) {
+                // Prevent -ve value when timer overflows.
+                prev_time = control.millis()
+                break
+            }
+            else if(elapsed_time < 200) {
+                // Recommended minimum time between readings 
+                // for ultrasonic model RCWL-9610 is 200ms.
+                basic.pause(elapsed_time)
+            }
 
-        // Read the echo.
-        let pulse = pins.pulseIn(ULTRASONIC_ECHO_PIN, PulseValue.High, 255 * const_2divspeed);
+            // Transmit a pulse.
+            pins.digitalWritePin(US_TRIG_PIN, 0)
+            control.waitMicros(2)
+            pins.digitalWritePin(US_TRIG_PIN, 1)
+            control.waitMicros(10)
+            pins.digitalWritePin(US_TRIG_PIN, 0)
 
-        // No echo detected.
-        if (pulse == 0) return 255;
+            // Read the echo.
+            const pulse = pins.pulseIn(US_ECHO_PIN, PulseValue.High, 255 * const_2divspeed)
 
-        // Get the value in cm.
-        return Math.idiv(pulse, const_2divspeed);
+            // No echo detected.
+            if (pulse == 0) return 255
+
+            prev_time = control.millis()
+            
+            // Tuned for microbit to get the right value in cm.
+            return Math.idiv(pulse, const_2divspeed)
+
+        // Repeat if -ve value detected.
+        } while (elapsed_time < 0)
+
+        return 255
     }
 }
