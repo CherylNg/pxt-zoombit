@@ -92,33 +92,38 @@ enum LinePosition {
 //% weight=11 color=#ff8000 icon="\uf1b9" block="ZOOM:BIT"
 //% groups=['Headlights', 'DC Motors', 'Maker Line', 'Ultrasonic']
 namespace zoombit {
-
+    
     // Ultrasonic sensor distance.
     let usDistance = 255
-
+    let usFlag = 0
 
     // Background function to read ultrasonic sensor distance at 200ms interval.
     control.inBackground(function() {
         while(1) {
-            // Transmit a pulse.
-            pins.digitalWritePin(US_TRIG_PIN, 0)
-            control.waitMicros(2)
-            pins.digitalWritePin(US_TRIG_PIN, 1)
-            control.waitMicros(10)
-            pins.digitalWritePin(US_TRIG_PIN, 0)
+            if (usFlag == 1) {      // Wait for read ultrasonic command
+                // Transmit a pulse.
+                pins.digitalWritePin(US_TRIG_PIN, 0)
+                control.waitMicros(2)
+                pins.digitalWritePin(US_TRIG_PIN, 1)
+                control.waitMicros(10)
+                pins.digitalWritePin(US_TRIG_PIN, 0)
 
-            // Read the echo.
-            const pulse = pins.pulseIn(US_ECHO_PIN, PulseValue.High, 255 * const_2divspeed)
+                // Read the echo.
+                const pulse = pins.pulseIn(US_ECHO_PIN, PulseValue.High, 255 * const_2divspeed)
 
-            // No echo detected.
-            if (pulse == 0) {
-                usDistance = 255
+                // No echo detected.
+                if (pulse == 0) {
+                    usDistance = 255
+                }
+                else {
+                    usDistance = Math.idiv(pulse, const_2divspeed)
+                }
+                basic.pause(200);   // Recommended minimum time between readings 
+                                    // for ultrasonic model RCWL-9610 is 200ms.
             }
             else {
-                usDistance = Math.idiv(pulse, const_2divspeed)
+                basic.pause(50);    // Allow the other fibers to run.
             }
-            basic.pause(200);   // Recommended minimum time between readings 
-                                // for ultrasonic model RCWL-9610 is 200ms.
         }
     })
 
@@ -133,6 +138,10 @@ namespace zoombit {
     //% blockId=zoombit_read_ultrasonic
     //% block="ultrasonic distance (cm)"
     export function readUltrasonic(): number {
+        if (usFlag == 0) {
+            usFlag = 1          // Enable ultrasonic reading in background
+            basic.pause(300)
+        }
         return usDistance
     }
 
