@@ -109,7 +109,8 @@ namespace zoombit {
                 pins.digitalWritePin(US_TRIG_PIN, 0)
 
                 // Read the echo.
-                const pulse = pins.pulseIn(US_ECHO_PIN, PulseValue.High, 255 * const_2divspeed)
+                // The maximum duration need to add in 20ms of deadzone.
+                const pulse = pins.pulseIn(US_ECHO_PIN, PulseValue.High, 255 * const_2divspeed + 20000)
 
                 // No echo detected.
                 if (pulse == 0) {
