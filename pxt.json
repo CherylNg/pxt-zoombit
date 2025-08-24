@@ -1,13 +1,13 @@
 {
     "name": "pxt-zoombit",
-    "version": "0.1.1",
-    "description": "MakeCode Package for Cytron ZOOM:BIT Robot Car Kit",
+    "version": "0.1.2",
+    "description": "MakeCode Package for Cytron ZOOM:BIT Robot Car Kit (without RGB/Neopixel)",
     "license": "MIT",
     "dependencies": {
         "core": "*",
         "radio": "*",
         "microphone": "*",
-        "pxt-rekabit": "github:cytrontechnologies/pxt-rekabit"
+        "pxt-rekabit": "https://github.com/faridskyman/pxt-rekabit"
     },
     "files": [
         "README.md",
